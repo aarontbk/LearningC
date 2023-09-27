@@ -28,7 +28,6 @@ void logger_log(const char *format, ...)
 
     if (currentPolicy & LOG_OUTPUT_POLICY_STDOUT)
     {
-        printf("%s ", get_time());
         vprintf(format, args);
         printf("\n");
     }
@@ -37,7 +36,6 @@ void logger_log(const char *format, ...)
     {
         if (logFile != NULL)
         {
-            fprintf(logFile, "%s ", get_time());
             vfprintf(logFile, format, args);
             fprintf(logFile, "\n");
             fflush(logFile);
@@ -53,22 +51,4 @@ void logger_destroy()
     {
         fclose(logFile);
     }
-}
-
-char *get_time()
-{
-    static char time_string[50]; // Adjust the size as needed
-    time_t current_time;
-    struct tm *time_info;
-
-    // Get the current time
-    time(&current_time);
-
-    // Convert the current time to a struct tm
-    time_info = localtime(&current_time);
-
-    // Convert the struct tm to a formatted time string
-    strftime(time_string, sizeof(time_string), "%d-%m-%Y %H:%M:%S", time_info);
-
-    return time_string;
 }
