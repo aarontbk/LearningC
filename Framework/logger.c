@@ -3,52 +3,57 @@
 #include <stdarg.h>
 #include <time.h>
 
-static LOG_OUTPUT_POLICY currentPolicy = LOG_OUTPUT_POLICY_NONE;
-static FILE *logFile = NULL;
+typedef struct Logger {
+    LOG_OUTPUT_POLICY policy;
+    FILE* file;
+} Logger;
 
-void logger_init(LOG_OUTPUT_POLICY policy, const char *logFilePath)
+struct Logger logger;
+
+void logger__init(LOG_OUTPUT_POLICY policy, const char *logFilePath)
 {
-    currentPolicy = policy;
+    logger.policy = policy;
+    logger.file = NULL;
     if (policy & LOG_OUTPUT_POLICY_FILE)
     {
-        logFile = fopen(logFilePath, "a");
+        logger.file = fopen(logFilePath, "a");
     }
 }
 
-void logger_log(const char *format, ...)
+void logger__log(const char *format, ...)
 {
     va_list args;           // Declare va_list
     va_start(args, format); // Initialize va_list
 
-    if (currentPolicy == LOG_OUTPUT_POLICY_NONE)
+    if (logger.policy == LOG_OUTPUT_POLICY_NONE)
     {
         va_end(args); // Clean up va_list
         return;
     }
 
-    if (currentPolicy & LOG_OUTPUT_POLICY_STDOUT)
+    if (logger.policy & LOG_OUTPUT_POLICY_STDOUT)
     {
         vprintf(format, args);
         printf("\n");
     }
 
-    if (currentPolicy & LOG_OUTPUT_POLICY_FILE)
+    if (logger.policy & LOG_OUTPUT_POLICY_FILE)
     {
-        if (logFile != NULL)
+        if (logger.file != NULL)
         {
-            vfprintf(logFile, format, args);
-            fprintf(logFile, "\n");
-            fflush(logFile);
+            vfprintf(logger.file, format, args);
+            fprintf(logger.file, "\n");
+            fflush(logger.file);
         }
     }
 
     va_end(args); // Clean up va_list
 }
 
-void logger_destroy()
+void logger__destroy()
 {
-    if (logFile != NULL)
+    if (logger.file != NULL)
     {
-        fclose(logFile);
+        fclose(logger.file);
     }
 }
