@@ -1,3 +1,4 @@
+#pragma once
 #define LOG(format, ...) logger_log("%s %s [%s] " format, __DATE__, __TIME__, __func__, ##__VA_ARGS__)
 
 typedef enum
