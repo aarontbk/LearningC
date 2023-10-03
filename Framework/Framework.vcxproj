@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClInclude Include="constants.h" />
     <ClInclude Include="logger.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger.c" />
+    <ClCompile Include="utils.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

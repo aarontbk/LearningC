@@ -2,32 +2,41 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
+#include <stdlib.h>
+#include "constants.h"
+
 
 typedef struct Logger {
     LOG_OUTPUT_POLICY policy;
     FILE* file;
 } Logger;
 
-struct Logger logger;
+Logger logger = { DEFAULT_LOG_OUTPUT_POLICY, NULL };
 
-void logger__init(LOG_OUTPUT_POLICY policy, const char *logFilePath)
+void logger__init(LOG_OUTPUT_POLICY policy)
 {
     logger.policy = policy;
     logger.file = NULL;
+
     if (policy & LOG_OUTPUT_POLICY_FILE)
     {
-        logger.file = fopen(logFilePath, "a");
+        logger.file = fopen(LOG_FILE_PATH, "a");
+        if (logger.file == NULL)
+        {
+            printf("Error opening file.");
+            exit(0);
+        }
     }
 }
 
-void logger__log(const char *format, ...)
+void logger__log(const char* format, ...)
 {
-    va_list args;           // Declare va_list
-    va_start(args, format); // Initialize va_list
+    va_list args;
+    va_start(args, format);
 
     if (logger.policy == LOG_OUTPUT_POLICY_NONE)
     {
-        va_end(args); // Clean up va_list
+        va_end(args);
         return;
     }
 
@@ -47,7 +56,7 @@ void logger__log(const char *format, ...)
         }
     }
 
-    va_end(args); // Clean up va_list
+    va_end(args);
 }
 
 void logger__destroy()
