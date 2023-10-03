@@ -4,6 +4,7 @@
 #include "logger.h"
 #include "constants.h"
 
+
 int main() {
     while (1) {
         char input[MAX_INPUT];
