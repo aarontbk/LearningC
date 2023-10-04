@@ -4,11 +4,14 @@
 #include "logger.h"
 #include "constants.h"
 
+#define MAX_INPUT_SIZE 128
 
 int main() {
-    while (1) {
-        char input[MAX_INPUT];
+    char input[MAX_INPUT_SIZE];
+    int log_policy = LOG_OUTPUT_POLICY_NONE;
 
+    while (1) {
+        printf("1. LOG_OUTPUT_POLICY_NONE or LOG_OUTPUT_POLICY_STDOUT or LOG_OUTPUT_POLICY_FILE.\n2. quit\n");
         fgets(input, sizeof(input), stdin);
         size_t input_size = strlen(input);
         if (input_size > 0 && input[input_size - 1] == '\n') {
@@ -17,32 +20,34 @@ int main() {
 
         if (strcmp(input, "quit") == 0) {
             printf("Exiting the program\n");
-            exit(0); // Exit the loop and the program
+            break;
         }
         else if (strcmp(input, "LOG_OUTPUT_POLICY_NONE") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_NONE);
+            log_policy = LOG_OUTPUT_POLICY_NONE;
             break;
         }
         else if (strcmp(input, "LOG_OUTPUT_POLICY_STDOUT") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_STDOUT);
+            log_policy = LOG_OUTPUT_POLICY_STDOUT;
             break;
         }
         else if (strcmp(input, "LOG_OUTPUT_POLICY_FILE") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_FILE);
+            log_policy = LOG_OUTPUT_POLICY_FILE;
             break;
         }
         else if (strcmp(input, "LOG_OUTPUT_POLICY_STDOUT | LOG_OUTPUT_POLICY_FILE") == 0 || strcmp(input, "LOG_OUTPUT_POLICY_FILE | LOG_OUTPUT_POLICY_STDOUT") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_FILE | LOG_OUTPUT_POLICY_STDOUT);
+            log_policy = LOG_OUTPUT_POLICY_STDOUT | LOG_OUTPUT_POLICY_FILE;
             break;
         }
         else {
             printf("Unknown command.\n");
         }
-
     }
-    LOG("Logger successfully initialized!");
 
-    logger__destroy();
+    if (log_policy != LOG_OUTPUT_POLICY_NONE) {
+        logger__init(log_policy);
+        LOG("Logger successfully initialized!");
+        logger__destroy();
+    }
 
     return 0;
 }
