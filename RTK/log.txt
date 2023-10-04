@@ -23,3 +23,17 @@ Oct  2 2023 11:17:37 [main] C:\dev\c\LearningC\RTK\main.c:39: After updating pol
 Oct  3 2023 15:19:35 [main] C:\dev\c\LearningC\RTK\main.c: line 42: Logger successfully initialized!
 10/3/2023 15:55:26 [main] C:\dev\c\LearningC\RTK\main.c: line 42: Logger successfully initialized!
 10/4/2023 17:48:28 [main] C:\dev\c\LearningC\RTK\main.c: line 48: Logger successfully initialized!
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 11: message with log level none
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 12: message with log level error
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 13: message with log level info
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 11: message with log level none
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 12: message with log level error
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 13: message with log level info
+
+10/4/2023 18:59:38 [main] C:\dev\c\LearningC\RTK\main.c: line 11: message with log level none
+

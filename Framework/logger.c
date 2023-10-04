@@ -9,14 +9,16 @@
 typedef struct Logger {
     LOG_OUTPUT_POLICY policy;
     FILE* file;
+    LOG_LEVEL level;
 } Logger;
 
-Logger logger = { DEFAULT_LOG_OUTPUT_POLICY, NULL };
+Logger logger = { DEFAULT_LOG_OUTPUT_POLICY, NULL, DEFAULT_LOG_LEVEL };
 
-void logger__init(LOG_OUTPUT_POLICY policy)
+void logger__init(LOG_OUTPUT_POLICY policy, LOG_LEVEL level)
 {
     logger.policy = policy;
     logger.file = NULL;
+    logger.level = level;
 
     if (policy & LOG_OUTPUT_POLICY_FILE)
     {
@@ -29,16 +31,15 @@ void logger__init(LOG_OUTPUT_POLICY policy)
     }
 }
 
-void logger__log(const char* format, ...)
+void logger__log(const char* format, LOG_LEVEL level, ...)
 {
-    va_list args;
-    va_start(args, format);
-
-    if (logger.policy == LOG_OUTPUT_POLICY_NONE)
+    if (logger.policy == LOG_OUTPUT_POLICY_NONE || logger.level < level)
     {
-        va_end(args);
-        return;
+        return; // No logging needed
     }
+
+    va_list args;
+    va_start(args, level);
 
     if (logger.policy & LOG_OUTPUT_POLICY_STDOUT)
     {
