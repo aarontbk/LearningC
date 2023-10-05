@@ -8,6 +8,7 @@ typedef enum
     LOG_OUTPUT_POLICY_NONE = 0,
     LOG_OUTPUT_POLICY_FILE = 1,
     LOG_OUTPUT_POLICY_STDOUT = 2
+    // CR: It's a nice convention to a last enum value for each enum called LOG_OUTPUT_POLICY_MAX so you can use it for validation (see it has a valid value)
 } LOG_OUTPUT_POLICY;
 
 typedef enum

@@ -6,14 +6,20 @@
 #include <assert.h>
 #include <stdbool.h>
 
+// CR: app module is one of the rare modules that you might consider putting in the RTK project and not framework, since it is really RTK logic.
+
+// CR: all functions should be either exposed from header file, or static. We can talk about the difference, please adapt the whole project.
 void handle_command_quit()
 {
+    // CR: no printf, log
     printf("Exiting the program\n");
+    // CR: you need to unerstand the difference between assert and exit. Please read about assert function online, it's to make sure something is true. In this case we want exit since it's a valid quit command
     assert(0);
 }
 
 bool handle_command_set_logger_config(int output_policy, int log_level)
 {
+    // CR: this is ugly and not understandable. You should have a function verify_set_logger_input or something that does the checks in a clear way without magic numbers.
     if (output_policy >= 0 && output_policy <= 3 && log_level >= 0 && log_level <= 2)
     {
         logger__init(output_policy, log_level);
