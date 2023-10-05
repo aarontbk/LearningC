@@ -1,7 +1,7 @@
 #pragma once
-#include "utils.h"
+#include <stdbool.h>
 
-#define LOG(format, ...) logger__log("%s %s [%s] %s: line %d: "format, time_stamp(), __TIME__, __func__, __FILE__, __LINE__, ##__VA_ARGS__)
+#define LOG(level, format, ...) logger__log(level, "%s %s [%s] %s: line %d: "format, __DATE__, __TIME__, __func__, __FILE__, __LINE__, ##__VA_ARGS__)
 
 typedef enum
 {
@@ -10,9 +10,23 @@ typedef enum
     LOG_OUTPUT_POLICY_STDOUT = 2
 } LOG_OUTPUT_POLICY;
 
-typedef struct Logger;
+typedef enum
+{
+    LOG_POLICY_LEVEL_NONE,
+    LOG_POLICY_LEVEL_ERROR,
+    LOG_POLICY_LEVEL_INFO
+}LOG_POLICY_LEVEL;
+
+typedef struct LoggerContext {
+    LOG_OUTPUT_POLICY policy;
+    FILE* file_handle;
+    LOG_POLICY_LEVEL level;
+} LoggerContext;
+
+struct LoggerContext;
 
 
-void logger__init(LOG_OUTPUT_POLICY policy);
-void logger__log(const char *format, ...);
-void logger__destroy();
+bool logger__init(LOG_OUTPUT_POLICY policy, LOG_POLICY_LEVEL level);
+bool logger__log(LOG_POLICY_LEVEL level, const char *format, ...);
+bool logger__update_config(int output_policy, int level);
+bool logger__destroy();

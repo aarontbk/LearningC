@@ -3,45 +3,13 @@
 #include <stdlib.h>
 #include "logger.h"
 #include "constants.h"
+#include "app.h"
 
 int main() {
-    while (1) {
-        char input[MAX_INPUT];
-
-        fgets(input, sizeof(input), stdin);
-        size_t input_size = strlen(input);
-        if (input_size > 0 && input[input_size - 1] == '\n') {
-            input[input_size - 1] = '\0';
-        }
-
-        if (strcmp(input, "quit") == 0) {
-            printf("Exiting the program\n");
-            exit(0); // Exit the loop and the program
-        }
-        else if (strcmp(input, "LOG_OUTPUT_POLICY_NONE") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_NONE);
-            break;
-        }
-        else if (strcmp(input, "LOG_OUTPUT_POLICY_STDOUT") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_STDOUT);
-            break;
-        }
-        else if (strcmp(input, "LOG_OUTPUT_POLICY_FILE") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_FILE);
-            break;
-        }
-        else if (strcmp(input, "LOG_OUTPUT_POLICY_STDOUT | LOG_OUTPUT_POLICY_FILE") == 0 || strcmp(input, "LOG_OUTPUT_POLICY_FILE | LOG_OUTPUT_POLICY_STDOUT") == 0) {
-            logger__init(LOG_OUTPUT_POLICY_FILE | LOG_OUTPUT_POLICY_STDOUT);
-            break;
-        }
-        else {
-            printf("Unknown command.\n");
-        }
-
-    }
-    LOG("Logger successfully initialized!");
-
-    logger__destroy();
-
+    
+    setup_logger_config();
+    LOG(LOG_POLICY_LEVEL_NONE, "message with log level none\n");
+    LOG(LOG_POLICY_LEVEL_ERROR, "message with log level error\n");
+    LOG(LOG_POLICY_LEVEL_INFO, "message with log level info\n");
     return 0;
 }

@@ -1,12 +1,8 @@
-Sep 28 2023 17:25:14 [main] Initialized log successfully, and started app
-Sep 28 2023 17:26:14 [main] Initialized log successfully, and started app
-Sep 28 2023 17:26:25 [main] Initialized log successfully, and started app
-Sep 28 2023 17:26:25 [main] asdf
-Sep 28 2023 17:26:25 [main] Initialized log successfully, and started app
-Sep 28 2023 17:26:25 [main] Initialized log successfully, and started app
-Sep 28 2023 17:26:25 [main] Initialized log successfully, and started app
+Oct  5 2023 17:45:10 [main] C:\dev\c\LearningC\RTK\main.c: line 11: message with log level none
 
-Sep 28 2023 17:47:43 [main] Initialized log successfully, and started app
-Sep 28 2023 17:47:43 [main] ABC
-Sep 28 2023 17:54:49 [main] Initialized log successfully, and started app
-Sep 28 2023 17:54:49 [main] test123
+Oct  5 2023 17:45:10 [main] C:\dev\c\LearningC\RTK\main.c: line 12: message with log level error
+
+Oct  5 2023 18:04:37 [main] C:\dev\c\LearningC\RTK\main.c: line 11: message with log level none
+
+Oct  5 2023 18:04:37 [main] C:\dev\c\LearningC\RTK\main.c: line 12: message with log level error
+
