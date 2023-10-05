@@ -1,5 +1,7 @@
 #pragma once
 #include "logger.h"
+#include <stdbool.h>
 
-LOG_POLICY_LEVEL get_logger_level();
-void setup_logger_config();
+void handle_command_quit();
+bool handle_command_set_logger_config(int output_policy, int log_level);
+bool setup_logger_config();

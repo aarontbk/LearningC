@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 #define LOG(level, format, ...) logger__log(level, "%s %s [%s] %s: line %d: "format, __DATE__, __TIME__, __func__, __FILE__, __LINE__, ##__VA_ARGS__)
 
@@ -25,6 +26,7 @@ typedef struct LoggerContext {
 struct LoggerContext;
 
 
-void logger__init(LOG_OUTPUT_POLICY policy, LOG_POLICY_LEVEL level);
-void logger__log(LOG_POLICY_LEVEL level, const char *format, ...);
-void logger__destroy();
+bool logger__init(LOG_OUTPUT_POLICY policy, LOG_POLICY_LEVEL level);
+bool logger__log(LOG_POLICY_LEVEL level, const char *format, ...);
+bool logger__update_config(int output_policy, int level);
+bool logger__destroy();
