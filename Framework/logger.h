@@ -1,6 +1,6 @@
 #pragma once
 
-#define LOG(format, level, ...) logger__log("%s %s [%s] %s: line %d: "format, level, time_stamp(), __TIME__, __func__, __FILE__, __LINE__, ##__VA_ARGS__)
+#define LOG(level, format, ...) logger__log(level, "%s %s [%s] %s: line %d: "format, __DATE__, __TIME__, __func__, __FILE__, __LINE__, ##__VA_ARGS__)
 
 typedef enum
 {
@@ -11,14 +11,20 @@ typedef enum
 
 typedef enum
 {
-    LOG_LEVEL_NONE = 0,
-    LOG_LEVEL_ERROR = 1,
-    LOG_LEVEL_INFO = 2
-}LOG_LEVEL;
+    LOG_POLICY_LEVEL_NONE,
+    LOG_POLICY_LEVEL_ERROR,
+    LOG_POLICY_LEVEL_INFO
+}LOG_POLICY_LEVEL;
 
-typedef struct Logger;
+typedef struct LoggerContext {
+    LOG_OUTPUT_POLICY policy;
+    FILE* file_handle;
+    LOG_POLICY_LEVEL level;
+} LoggerContext;
+
+struct LoggerContext;
 
 
-void logger__init(LOG_OUTPUT_POLICY policy, LOG_LEVEL level);
-void logger__log(const char *format, LOG_LEVEL level, ...);
+void logger__init(LOG_OUTPUT_POLICY policy, LOG_POLICY_LEVEL level);
+void logger__log(LOG_POLICY_LEVEL level, const char *format, ...);
 void logger__destroy();

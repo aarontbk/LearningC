@@ -1,37 +1,31 @@
-#include "logger.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "constants.h"
+#include "logger.h"
 
+static LoggerContext logger = { DEFAULT_LOG_OUTPUT_POLICY, NULL, DEFAULT_LOG_LEVEL };
 
-typedef struct Logger {
-    LOG_OUTPUT_POLICY policy;
-    FILE* file;
-    LOG_LEVEL level;
-} Logger;
-
-Logger logger = { DEFAULT_LOG_OUTPUT_POLICY, NULL, DEFAULT_LOG_LEVEL };
-
-void logger__init(LOG_OUTPUT_POLICY policy, LOG_LEVEL level)
+void logger__init(LOG_OUTPUT_POLICY policy, LOG_POLICY_LEVEL level)
 {
     logger.policy = policy;
-    logger.file = NULL;
+    logger.file_handle = NULL;
     logger.level = level;
 
     if (policy & LOG_OUTPUT_POLICY_FILE)
     {
-        logger.file = fopen(LOG_FILE_PATH, "a");
-        if (logger.file == NULL)
+        logger.file_handle = fopen(DEFAULT_LOG_FILE_PATH, "a");
+        if (logger.file_handle == NULL)
         {
             printf("Error opening file.");
-            exit(0);
+            assert(0);
         }
     }
 }
 
-void logger__log(const char* format, LOG_LEVEL level, ...)
+void logger__log(LOG_POLICY_LEVEL level, const char* format, ...)
 {
     if (logger.policy == LOG_OUTPUT_POLICY_NONE || logger.level < level)
     {
@@ -39,7 +33,7 @@ void logger__log(const char* format, LOG_LEVEL level, ...)
     }
 
     va_list args;
-    va_start(args, level);
+    va_start(args, format);
 
     if (logger.policy & LOG_OUTPUT_POLICY_STDOUT)
     {
@@ -49,11 +43,17 @@ void logger__log(const char* format, LOG_LEVEL level, ...)
 
     if (logger.policy & LOG_OUTPUT_POLICY_FILE)
     {
-        if (logger.file != NULL)
+        if (logger.file_handle != NULL)
         {
-            vfprintf(logger.file, format, args);
-            fprintf(logger.file, "\n");
-            fflush(logger.file);
+            vfprintf(logger.file_handle, format, args);
+            fprintf(logger.file_handle, "\n");
+            fflush(logger.file_handle);
+            fclose(logger.file_handle);
+        }
+        else
+        {
+            printf("Error writing to file");
+            assert(0);
         }
     }
 
@@ -62,8 +62,8 @@ void logger__log(const char* format, LOG_LEVEL level, ...)
 
 void logger__destroy()
 {
-    if (logger.file != NULL)
+    if (logger.file_handle != NULL)
     {
-        fclose(logger.file);
+        fclose(logger.file_handle);
     }
 }

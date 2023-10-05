@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include "logger.h"
 #include "constants.h"
-#include "utils.h"
+#include "app.h"
 
 int main() {
     
     setup_logger_config();
-    LOG("message with log level none\n", LOG_LEVEL_NONE);
-    LOG("message with log level error\n", LOG_LEVEL_ERROR);
-    LOG("message with log level info\n", LOG_LEVEL_INFO);
+    LOG(LOG_POLICY_LEVEL_NONE, "message with log level none\n");
+    LOG(LOG_POLICY_LEVEL_ERROR, "message with log level error\n");
+    LOG(LOG_POLICY_LEVEL_INFO, "message with log level info\n");
     return 0;
 }
